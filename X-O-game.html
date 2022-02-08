@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--TO Work this page it is take 6 Hours Without  any break ^_^  ABDULLAH SALHAB -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X - O Game </title>
+    <style>
+        body{
+            background-color: gray;
+        }
+        table{
+            border: 2px black solid;
+            margin-top: 150px;
+            margin-left: 500px;
+            box-shadow: 0px 0px 15px 8px black;
+        }
+        th{
+            border: solid 2px black;
+            cursor: pointer;
+            width:100px;
+            height:100px;
+            color: black;
+            font-size: 35px
+        }
+        th:hover{
+            background-color: rgb(185, 185, 184);
+        }
+        h2{
+            position: absolute;
+            background-color: cornflowerblue;
+            left: 400px;
+            top: 0;
+            width: 250px;
+            padding: 10px 100px 10px 200px ;
+            border-radius: 10px;
+            border: 5px black solid;
+            box-shadow: 0px 0px 15px 8px black;
+        }
+         #all{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            background-color: rgba(24, 23, 23, 0.527);
+        }
+        #label{
+            position: absolute;
+            float: right;
+            right: 0;
+            text-align: right;
+            padding: 10px;
+        }
+        #label:hover{
+            background-color: rgb(102, 102, 102);
+            cursor: pointer;
+            color: red;
+        }
+        .tip{
+            position: absolute;
+            width: 500px;
+            z-index: 4;
+            background-color: rgb(201, 201, 201);
+            font-size: 30px;
+            font-family: fantasy;
+            left: 400px;
+            height: 300px;
+            top:200px;
+            border: black 3px solid;
+            padding: 0px 30px 25px 30px;
+        }
+        button:hover{
+            background-color: rgb(13, 92, 167);
+            cursor: pointer;
+        }
+        #human ,#computer{
+            width: 150px;
+            height: 150px;
+            border: 2px black solid;
+            float: left;
+            margin-left: 20px;
+            margin-top: 30px;
+        }
+        #human{
+            margin-left: 100px;
+        }
+        #human:hover ,#computer:hover{
+            cursor: pointer;
+            border: 5px black solid;
+            box-shadow: 0px 0px 15px 8px black;
+        }
+        #try{
+            display: none;
+            color: red;
+            position: absolute;
+            top: 500px;
+        }
+        h2:hover{
+            cursor: pointer;
+            border: 5px red solid;
+            box-shadow: 0px 0px 15px 8px rgb(90, 8, 8);
+        }
+    </style>
+</head>
+<body>
+    <h2>X - O Game </h2>
+    <div id="all">    </div>
+    <div class="tip" id="tip">
+        <img src="2.png" alt="1" width="50px" height="50px" style="margin-top: 5px;">
+        <label id="label_tip" style="font-family: monospace;position: absolute; top: 15px;">Tip:Choose the player :</label>
+        <label id="label" onclick="close_tip()"> &times;</label><br> 
+        <div id="computer" onclick="choose_player(1),close_tip()" >
+          <img src="computer.jpg" width="100%" height="100%"></div>
+        <div id="human" onclick="choose_player(2) , close_tip()" >
+            <img src="human.jpg" width="100%" height="100%"></div><br>
+        <div style="margin-top:160px;margin-left: 20px;">
+            <label>computer</label><label style="margin-left: 140px;" >human</label></div><br>
+    </div>
+    <div  id="try"> 
+        <h2 onclick="location.reload()">Try again</h2>
+    </div>
+    <table>
+        <tbody>
+            <tr><th id="cell1" onclick="set_cell(1)"></th>
+                <th id="cell2" onclick="set_cell(2)"></th>
+                <th id="cell3" onclick="set_cell(3)"></th>
+            </tr>
+            <tr><th id="cell4" onclick="set_cell(4)"></th>
+                <th id="cell5" onclick="set_cell(5)"></th>
+                <th id="cell6" onclick="set_cell(6)"></th>
+            </tr>
+            <tr><th id="cell7" onclick="set_cell(7)"></th>
+                <th id="cell8" onclick="set_cell(8)"></th>
+                <th id="cell9" onclick="set_cell(9)"></th>
+            </tr>
+        </tbody>
+    </table>
+<script>
+    var counter=0;
+    var array_x=[];
+    var array_o=[];
+    var array_win=[];
+    var state=false;
+    var computer=false;
+    var check_player=false;
+    function set_cell(number) {
+      if(computer==true){
+          computer_player(number);
+      }
+      else{
+           Human_Player(number);
+      }
+    }
+    function Human_Player(number) {
+        if(counter<9 && state==false && check(number)==0 && computer==false){
+          if(counter%2==0){
+             document.getElementById("cell"+number).innerHTML="X";
+             array_x+=[number];
+             counter++;
+             state=check_cell(array_x ," Player 1 ");
+          }
+          else {
+             document.getElementById("cell"+number).innerHTML="O";
+             array_o+=[number];
+             counter++;
+             state=check_cell(array_o," Player 2 ");
+          }
+      }
+      if (counter==9 && state==false) {
+          alert("no any one win game finish play again");
+          try_again();
+      }
+      if(counter>9 || state==true ){
+          alert("game finish");
+          try_again();
+      }
+    }
+    function computer_player(number) {
+        if(counter<9 && state==false && check(number)==0 ){
+             document.getElementById("cell"+number).innerHTML="X";
+             array_x+=[number];
+             counter++;
+             state=check_cell(array_x ," YOU !! ");
+             var num= Math.floor( 1 + Math.random() * 9 );
+             if (counter<9 && state==false) {
+              while (check(num)==1)
+              {num= Math.floor( 1 + Math.random() * 9 );}
+             document.getElementById("cell"+num).innerHTML="O";
+             array_o+=[num];
+             counter++;
+             state=check_cell(array_o," Computer ");
+             }
+      }
+      if(counter>9 || state==true ){
+          alert("game finish");
+          try_again();
+      }
+      if (counter==9 && state==false) {
+          alert("no any one win game finish play again");
+          try_again();
+      }
+    }
+    function check_cell(array,array_name) {
+        if(array.includes("1") && array.includes("2") && array.includes("3")){
+        array_win=[1,2,3];
+        change_color(array_win);
+        alert("The Win is : "+array_name);
+        return true;
+        }
+        if(array.includes("1") && array.includes("4") && array.includes("7")){
+        array_win=[1,4,7];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("1") && array.includes("5") && array.includes("9")){
+        array_win=[1,5,9];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("2") && array.includes("5") && array.includes("8")){
+        array_win=[2,5,8];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("3") && array.includes("6") && array.includes("9")){
+        array_win=[3,6,9];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("4") && array.includes("5") && array.includes("6")){
+        array_win=[4,5,6];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("7") && array.includes("8") && array.includes("9")){
+        array_win=[7,8,9];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        if(array.includes("3") && array.includes("5") && array.includes("7")){
+        array_win=[3,5,7];
+        change_color(array_win);
+        alert("The Win is :"+array_name);
+        return true;
+        }
+        else{
+            return false;
+        }
+    }
+    function change_color(array) {
+        for (let index = 0; index < array.length; index++) {
+            document.getElementById("cell"+array[index]).style.backgroundColor="red";
+        }
+    }
+    function check(num) {
+        return(array_o.includes(num)+array_x.includes(num));
+    }
+    function tip() {
+        document.getElementById("tip").style.display="block";
+        document.getElementById("all").style.display="block";
+    }
+    function close_tip() {
+        if (check_player) {
+        document.getElementById("tip").style.display="none";
+        document.getElementById("all").style.display="none";
+        }
+        else
+        document.getElementById("label_tip").innerHTML="YOU HAVE TO CHOOSE PLAYER !!!!!"
+    }
+    function choose_player(player) {
+        if (player==1) {
+            computer=true;
+            check_player=true;
+        }
+        else if (player==2) {
+            check_player=true;
+        }
+    }
+    function try_again() {
+        document.getElementById("try").style.display="block";
+    }
+</script>
+</body>
+</html>
